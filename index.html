@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khoirul Anam — Legal Counsel & Contract Drafter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #181818;
+    --surface: #1a1a1a;
+    --border: rgba(255,255,255,0.07);
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.12);
+    --text: #f0ede8;
+    --text2: #8a8580;
+    --text3: #5a5550;
+    --accent: #4a7fa5;
+    --white: #ffffff;
+    --radius: 2px;
+    --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  [data-theme="light"] {
+    --bg: #f8f6f2;
+    --bg2: #f0ede8;
+    --bg3: #e8e4de;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1814;
+    --text2: #6a6560;
+    --text3: #9a9590;
+    --gold-dim: rgba(201,168,76,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.25s ease;
+  }
+
+  /* Loading screen */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .loader-line {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: expandLine 1.2s ease 0.6s forwards;
+  }
+  .loader-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--text3);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+  @keyframes expandLine { to { width: 200px; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Navbar */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 clamp(24px, 5vw, 80px);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(0px);
+  }
+  nav.scrolled {
+    background: rgba(10,10,10,0.85);
+    border-bottom-color: var(--border);
+    backdrop-filter: blur(20px);
+  }
+  [data-theme="light"] nav.scrolled { background: rgba(248,246,242,0.85); }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  .theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+  .nav-cta {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--gold);
+    padding: 10px 22px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 400;
+  }
+  .nav-cta:hover { background: var(--gold2); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: none;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--text);
+    transition: all 0.3s ease;
+  }
+
+  /* Section base */
+  section {
+    padding: clamp(80px, 12vw, 160px) clamp(24px, 8vw, 120px);
+    position: relative;
+  }
+
+  .section-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(74,127,165,0.03) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 900px;
+    opacity: 0;
+    animation: heroReveal 1.2s ease 1.8s forwards;
+  }
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 48px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    color: var(--text);
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 300;
+  }
+  .hero-title strong {
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .hero-desc {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.8;
+    color: var(--text2);
+    max-width: 560px;
+    margin-bottom: 52px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--gold);
+    padding: 16px 36px;
+    text-decoration: none;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold2);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .btn-primary:hover::before { transform: scaleX(1); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--text); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: clamp(24px, 8vw, 120px);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text3);
+    opacity: 0;
+    animation: fadeUp 1s ease 2.5s forwards;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite 3s;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 48px;
+    right: clamp(24px, 8vw, 120px);
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 1s ease 2.5s forwards;
+  }
+  .hero-badge-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+  .hero-badge-sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--bg2);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(48px, 8vw, 120px);
+    align-items: start;
+  }
+
+  .about-left .about-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 40px;
+  }
+  .about-left .about-quote em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .about-story {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .about-story p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--text2);
+  }
+  .about-story p strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .about-right {
+    padding-top: 60px;
+  }
+
+  .about-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  .about-stat {
+    background: var(--bg2);
+    padding: 28px 24px;
+  }
+  .about-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .about-stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .about-values {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .about-value {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .about-value-icon {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold-dim);
+    background: var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .about-value-text h4 {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .about-value-text p {
+    font-size: 0.8rem;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+
+  /* EXPERTISE */
+  #expertise { }
+
+  .expertise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 72px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .expertise-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--text);
+  }
+  .expertise-subtitle {
+    font-size: 0.85rem;
+    color: var(--text3);
+    max-width: 320px;
+    line-height: 1.7;
+    text-align: right;
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .expertise-card {
+    background: var(--bg);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+  }
+  .expertise-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+  }
+  .expertise-card:hover { background: var(--bg2); }
+  .expertise-card:hover::before { transform: scaleX(1); }
+
+  .expertise-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 32px;
+    transition: color 0.4s ease;
+  }
+  .expertise-card:hover .expertise-card-num {
+    color: var(--gold-dim);
+  }
+
+  .expertise-card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .expertise-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .expertise-card p {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .expertise-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .expertise-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 4px 10px;
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+
+  .experience-header {
+    margin-bottom: 72px;
+  }
+  .experience-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--text);
+  }
+
+  .experience-cases {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .case-item {
+    background: var(--bg2);
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    gap: 0;
+    transition: background 0.3s ease;
+    cursor: default;
+  }
+  .case-item:hover { background: var(--bg3); }
+
+  .case-num {
+    padding: 48px 24px;
+    border-right: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text3);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 52px;
+  }
+
+  .case-org {
+    padding: 48px 32px;
+    border-right: 1px solid var(--border);
+  }
+  .case-org-name {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .case-org-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .case-detail {
+    padding: 48px 32px;
+    border-right: 1px solid var(--border);
+  }
+  .case-detail-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .case-detail p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text2);
+  }
+
+  .case-impact {
+    padding: 48px 32px;
+  }
+  .case-impact-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .case-impact p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--text2);
+  }
+
+  /* ACHIEVEMENTS */
+  #achievements { }
+
+  .achievements-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .achievements-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .achievements-sub {
+    font-size: 0.85rem;
+    color: var(--text3);
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  .achievement-featured {
+    border: 1px solid var(--gold);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    background: var(--gold-dim);
+    margin-bottom: 1px;
+  }
+  .achievement-featured::after {
+    content: '🥇';
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    font-size: 2.5rem;
+    opacity: 0.6;
+  }
+  .achievement-featured-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .achievement-featured h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .achievement-featured p {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .achievement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-top: none;
+  }
+  .achievement-item {
+    background: var(--bg);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: background 0.3s ease;
+  }
+  .achievement-item:hover { background: var(--bg2); }
+  .achievement-item-icon {
+    font-size: 1.3rem;
+    width: 44px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .achievement-item-text h4 {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .achievement-item-text p {
+    font-size: 0.78rem;
+    color: var(--text3);
+  }
+
+  /* Right side: certifications */
+  .certifications-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .certifications-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .cert-item {
+    background: var(--bg);
+    padding: 28px 24px;
+    transition: background 0.3s ease;
+  }
+  .cert-item:hover { background: var(--bg2); }
+  .cert-item-icon { font-size: 1.2rem; margin-bottom: 12px; }
+  .cert-item h4 {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .cert-item p {
+    font-size: 0.72rem;
+    color: var(--text3);
+  }
+
+  /* COMMUNITY */
+  #community { background: var(--bg2); }
+
+  .community-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .community-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--text);
+    grid-column: 1 / -1;
+    margin-bottom: 8px;
+  }
+
+  .community-featured {
+    border: 1px solid var(--border);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg3);
+    transition: border-color 0.4s ease;
+  }
+  .community-featured:hover { border-color: var(--gold); }
+  .community-featured::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .community-featured-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .community-featured-tag::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--gold);
+  }
+
+  .community-featured h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .community-featured p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 32px;
+  }
+
+  .community-featured-stats {
+    display: flex;
+    gap: 32px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+  .community-featured-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+  }
+  .community-featured-stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  .community-orgs {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .community-org {
+    background: var(--bg2);
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .community-org:hover { background: var(--bg3); }
+  .community-org-left h4 {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .community-org-left p {
+    font-size: 0.75rem;
+    color: var(--text3);
+  }
+  .community-org-role {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 4px 10px;
+  }
+
+  /* CONTACT */
+  #contact {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.04) 0%, transparent 70%);
+  }
+
+  .contact-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+
+  .contact-left {}
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+  .contact-title em { color: var(--gold); font-style: italic; }
+
+  .contact-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 48px;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-link:hover { color: var(--gold); }
+  .contact-link-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: border-color 0.3s ease;
+  }
+  .contact-link:hover .contact-link-icon { border-color: var(--gold); }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-group {
+    position: relative;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s ease;
+    cursor: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--gold);
+    padding: 18px 40px;
+    border: none;
+    cursor: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .form-submit:hover { background: var(--gold2); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px clamp(24px, 8vw, 120px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-left {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text3);
+  }
+  .footer-left span { color: var(--gold); }
+  .footer-right {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+  }
+
+  /* Scroll animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--gold);
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 90;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* Divider */
+  .gold-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 32px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .case-item { grid-template-columns: 1fr; }
+    .case-num { display: none; }
+    .case-detail, .case-impact { border-right: none; }
+    .case-org { border-right: none; }
+  }
+
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .expertise-grid { grid-template-columns: 1fr 1fr; }
+    .achievements-layout { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; }
+    .community-grid { grid-template-columns: 1fr; }
+    .about-right { padding-top: 0; }
+    .expertise-subtitle { text-align: left; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .expertise-grid { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .about-stat-grid { grid-template-columns: 1fr 1fr; }
+    .hero-badge { display: none; }
+    .case-item { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-name">Khoirul Anam</div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Legal Counsel · Contract Drafter · Consultant</div>
+</div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#expertise" onclick="closeMobile()">Expertise</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#achievements" onclick="closeMobile()">Achievements</a>
+  <a href="#community" onclick="closeMobile()">Community</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">K. <span>Anam</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#expertise">Practice</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#community">Leadership</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
+    <a href="#contact" class="nav-cta"><span>Hire Me</span></a>
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Khoirul Anam · Legal Counsel & Contract Drafter</p>
+    <h1 class="hero-title">
+      Drafting <em>Precise Agreements.</em><br>
+      Delivering <em>Strategic</em><br>
+      <strong>Legal Counsel.</strong>
+    </h1>
+    <p class="hero-desc">
+      A results-driven legal professional with hands-on experience in contract drafting, legal aid, and institutional counsel — with a sharp edge in Sharia-compliant transactions and governance.
+    </p>
+    <div class="hero-actions">
+      <a href="#experience" class="btn-primary">
+        <span>View Case Experience</span>
+        <span>→</span>
+      </a>
+      <a href="#contact" class="btn-secondary">Open to Opportunities ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll to explore
+  </div>
+
+  <div class="hero-badge">
+    <p class="hero-badge-text">"Clarity in contracts.<br>Integrity in counsel."</p>
+    <p class="hero-badge-sub">Personal Principle · Legal Practice</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-left reveal">
+      <div class="section-tag">01 — About</div>
+      <h2 class="about-quote">
+        Good law is not about<br>
+        complexity — it's about <em>clarity.</em>
+      </h2>
+      <div class="about-story">
+        <p>I'm <strong>Khoirul Anam</strong>, a final-year law student at UIN Sunan Kalijaga Yogyakarta with real-world experience in contract drafting, legal aid, and institutional counsel.</p>
+        <p>My background in Islamic law isn't a limitation — it's a <strong>competitive advantage</strong>. In a market where Sharia-compliant finance and Islamic institutions are growing rapidly, I bring both legal rigor and deep contextual understanding that most lawyers can't offer.</p>
+        <p>From drafting MoUs and legal complaints to advising clients and managing case files in court — I approach every matter with <strong>precision, professionalism, and purpose.</strong></p>
+      </div>
+    </div>
+    <div class="about-right reveal reveal-delay-2">
+      <div class="about-stat-grid">
+        <div class="about-stat">
+          <div class="about-stat-num">3+</div>
+          <div class="about-stat-label">Years of Legal Experience</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">🥇</div>
+          <div class="about-stat-label">National Olympiad Gold</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">2+</div>
+          <div class="about-stat-label">Published Works</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">∞</div>
+          <div class="about-stat-label">Commitment to Justice</div>
+        </div>
+      </div>
+      <div class="about-values">
+        <div class="about-value">
+          <div class="about-value-icon">📝</div>
+          <div class="about-value-text">
+            <h4>Contract Precision</h4>
+            <p>Every clause matters. I draft with clarity, anticipate disputes, and protect all parties involved.</p>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="about-value-icon">⚖</div>
+          <div class="about-value-text">
+            <h4>Strategic Counsel</h4>
+            <p>Legal advice that goes beyond the law — understanding the client's goals and business context.</p>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="about-value-icon">🌐</div>
+          <div class="about-value-text">
+            <h4>Sharia-Compliant Edge</h4>
+            <p>Fluent in both civil law and Islamic jurisprudence — a rare dual competence in today's market.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="expertise-header reveal">
+    <div>
+      <div class="section-tag">02 — Expertise</div>
+      <h2 class="expertise-title">What I<br>Bring to the Table</h2>
+    </div>
+    <p class="expertise-subtitle">Three core competencies that make me effective as a legal counsel, contract drafter, and strategic advisor.</p>
+  </div>
+  <div class="expertise-grid">
+    <div class="expertise-card reveal">
+      <div class="expertise-card-num">01</div>
+      <div class="expertise-card-icon">📝</div>
+      <h3>Contract Drafting</h3>
+      <p>Experienced in drafting clear, enforceable legal documents — from institutional MoUs and cooperation agreements to legal complaints and formal correspondences.</p>
+      <div class="expertise-tags">
+        <span class="expertise-tag">MoU & Agreements</span>
+        <span class="expertise-tag">Legal Complaints</span>
+        <span class="expertise-tag">Formal Letters</span>
+        <span class="expertise-tag">Sharia Contracts</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal reveal-delay-2">
+      <div class="expertise-card-num">02</div>
+      <div class="expertise-card-icon">⚖️</div>
+      <h3>Legal Counsel & Aid</h3>
+      <p>Hands-on experience advising clients, supporting litigation strategy, and navigating court procedures — from legal aid (LBH) to religious court administration.</p>
+      <div class="expertise-tags">
+        <span class="expertise-tag">Client Advisory</span>
+        <span class="expertise-tag">Litigation Support</span>
+        <span class="expertise-tag">Court Procedure</span>
+        <span class="expertise-tag">Case Strategy</span>
+      </div>
+    </div>
+    <div class="expertise-card reveal reveal-delay-3">
+      <div class="expertise-card-num">03</div>
+      <div class="expertise-card-icon">🔍</div>
+      <h3>Legal Research & Analysis</h3>
+      <p>Published author and Gold Medal researcher — skilled at translating complex regulations, jurisprudence, and policy into clear, actionable legal insights.</p>
+      <div class="expertise-tags">
+        <span class="expertise-tag">Legal Writing</span>
+        <span class="expertise-tag">Policy Analysis</span>
+        <span class="expertise-tag">Sharia Compliance</span>
+        <span class="expertise-tag">Due Diligence</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="experience-header reveal">
+    <div class="section-tag">03 — Experience</div>
+    <h2 class="experience-title">Selected Legal<br>Work & Practice</h2>
+  </div>
+  <div class="experience-cases">
+
+    <div class="case-item reveal">
+      <div class="case-num">01</div>
+      <div class="case-org">
+        <div class="case-org-name">LBH — Legal Aid Institute</div>
+        <div class="case-org-title">Legal Drafter & Client Advisor</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-label">What I Did</div>
+        <p>Drafted legal complaints and formal submissions, conducted client intake consultations, and contributed to case strategy development for civil and administrative law matters.</p>
+      </div>
+      <div class="case-impact">
+        <div class="case-impact-label">Key Output</div>
+        <p>Delivered well-structured legal documents that supported client access to justice. Built core litigation drafting and client communication skills.</p>
+      </div>
+    </div>
+
+    <div class="case-item reveal">
+      <div class="case-num">02</div>
+      <div class="case-org">
+        <div class="case-org-name">LAZIS — Zakat & Social Institution</div>
+        <div class="case-org-title">Legal Document Specialist</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-label">What I Did</div>
+        <p>Drafted and reviewed institutional Memoranda of Understanding (MoU), formalized partnership agreements, and managed beneficiary data for social programs — ensuring Sharia compliance throughout.</p>
+      </div>
+      <div class="case-impact">
+        <div class="case-impact-label">Key Output</div>
+        <p>Strengthened institutional governance through precise legal documentation and airtight inter-agency agreements.</p>
+      </div>
+    </div>
+
+    <div class="case-item reveal">
+      <div class="case-num">03</div>
+      <div class="case-org">
+        <div class="case-org-name">Religious Court (Pengadilan Agama)</div>
+        <div class="case-org-title">Court Procedure Practitioner</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-label">What I Did</div>
+        <p>Managed case file administration, observed live court proceedings, and participated in judicial simulation exercises covering family law and Islamic economic dispute resolution.</p>
+      </div>
+      <div class="case-impact">
+        <div class="case-impact-label">Key Output</div>
+        <p>Developed firsthand understanding of procedural law and judicial reasoning in Sharia court settings — an edge in Islamic economic dispute matters.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="achievements-layout">
+    <div class="achievements-left reveal">
+      <div class="section-tag">04 — Achievements</div>
+      <h2 class="achievements-title">Track Record<br>of Excellence</h2>
+      <p class="achievements-sub">A consistent record of high performance — academically, professionally, and intellectually.</p>
+
+      <div class="achievement-featured">
+        <div class="achievement-featured-tag">Highest Honor · National Level</div>
+        <h3>Gold Medal — National Economics Olympiad</h3>
+        <p>Awarded Gold for outstanding performance in legal-economic analysis and applied reasoning — competing against top students from universities across Indonesia. Proof that legal precision and analytical thinking go hand in hand.</p>
+      </div>
+
+      <div class="achievement-list">
+        <div class="achievement-item">
+          <div class="achievement-item-icon">📖</div>
+          <div class="achievement-item-text">
+            <h4>Co-Author — National Anthology Book</h4>
+            <p>Published contributor to a nationally recognized intellectual anthology</p>
+          </div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-item-icon">📰</div>
+          <div class="achievement-item-text">
+            <h4>Published Journal Article — SINTA 4 Accredited</h4>
+            <p>Research on Islamic banking published in the faculty's accredited academic journal</p>
+          </div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-item-icon">🏛️</div>
+          <div class="achievement-item-text">
+            <h4>Academic & Achievement Division — HMP</h4>
+            <p>Driving academic programs and student achievements at the study program level</p>
+          </div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-item-icon">🎯</div>
+          <div class="achievement-item-text">
+            <h4>Trial Simulation — Best Advocate</h4>
+            <p>Outstanding performance in judicial simulation exercises</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="achievements-right reveal reveal-delay-2">
+      <div class="certifications-title">Certifications & Training</div>
+      <div class="cert-grid">
+        <div class="cert-item">
+          <div class="cert-item-icon">📝</div>
+          <h4>Legal Drafting</h4>
+          <p>Professional contract & document drafting</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-item-icon">⚖️</div>
+          <h4>Litigation Basics</h4>
+          <p>Court procedure & case management</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-item-icon">🏦</div>
+          <h4>Sharia Finance Law</h4>
+          <p>Islamic banking & financial compliance</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-item-icon">🤝</div>
+          <h4>Mediation & ADR</h4>
+          <p>Alternative dispute resolution</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-item-icon">🔎</div>
+          <h4>Legal Research</h4>
+          <p>Advanced case-based research methods</p>
+        </div>
+        <div class="cert-item">
+          <div class="cert-item-icon">📋</div>
+          <h4>Compliance & Governance</h4>
+          <p>Institutional legal compliance frameworks</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px; padding: 32px; border: 1px solid var(--border); background: var(--bg2);">
+        <div class="section-tag" style="margin-bottom: 16px;">Education</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--text); margin-bottom: 8px;">UIN Sunan Kalijaga Yogyakarta</div>
+        <div style="font-size: 0.8rem; color: var(--text3); margin-bottom: 4px;">Bachelor of Law — Islamic Economic Law (S.H.)</div>
+        <div style="font-size: 0.75rem; color: var(--text3);">Faculty of Sharia & Law · Final Year · 2021–2025</div>
+        <div class="gold-divider" style="margin: 20px 0;"></div>
+        <div style="font-size: 0.8rem; color: var(--text2); line-height: 1.7;">Specialized in <strong style="color: var(--text);">contract law, court procedure, and Sharia-compliant transactions</strong> — with a strong foundation in civil law and legal drafting.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="community">
+  <div class="community-grid">
+    <div style="grid-column: 1 / -1;" class="reveal">
+      <div class="section-tag">05 — Community & Leadership</div>
+      <h2 class="community-title">Leadership &<br>Community Building</h2>
+    </div>
+
+    <div class="community-featured reveal">
+      <div class="community-featured-tag">Founder · Active Movement</div>
+      <h3>Meja Tengah.id</h3>
+      <p>A youth intellectual platform that brings together law students, young professionals, and thinkers to discuss legal, economic, and civic issues. Built from the ground up — from concept to community.</p>
+      <p style="font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--text); margin-top: 16px;">"Shaping the next generation of critical, legally-literate leaders."</p>
+      <div class="community-featured-stats">
+        <div>
+          <div class="community-featured-stat-num">2022</div>
+          <div class="community-featured-stat-label">Founded</div>
+        </div>
+        <div>
+          <div class="community-featured-stat-num">50+</div>
+          <div class="community-featured-stat-label">Members</div>
+        </div>
+        <div>
+          <div class="community-featured-stat-num">20+</div>
+          <div class="community-featured-stat-label">Events Held</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="community-orgs reveal reveal-delay-2">
+      <div class="community-org">
+        <div class="community-org-left">
+          <h4>HMI — Himpunan Mahasiswa Islam</h4>
+          <p>National Islamic student organization · Cabang Yogyakarta</p>
+        </div>
+        <div class="community-org-role">Active Member</div>
+      </div>
+      <div class="community-org">
+        <div class="community-org-left">
+          <h4>LKBHMI — Lembaga Konsultasi & Bantuan Hukum</h4>
+          <p>Legal consultation & aid body · Cabang Yogyakarta</p>
+        </div>
+        <div class="community-org-role">Legal Research Team</div>
+      </div>
+      <div class="community-org">
+        <div class="community-org-left">
+          <h4>BLC — Business Law Centre</h4>
+          <p>Business law development program · UIN Suka</p>
+        </div>
+        <div class="community-org-role">Member</div>
+      </div>
+      <div class="community-org">
+        <div class="community-org-left">
+          <h4>Himpunan Mahasiswa Prodi (HMP)</h4>
+          <p>Study program student association · Faculty of Sharia & Law</p>
+        </div>
+        <div class="community-org-role">Academic & Achievement Division</div>
+      </div>
+      <div class="community-org">
+        <div class="community-org-left">
+          <h4>Academic Writing Club</h4>
+          <p>Scholarly publication & peer review community</p>
+        </div>
+        <div class="community-org-role">Core Member</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <div class="section-tag">06 — Contact</div>
+      <h2 class="contact-title">Ready to Work<br>with a <em>Sharp</em><br>Legal Mind?</h2>
+      <p class="contact-desc">Whether you need a contract drafter, legal counsel, or a research collaborator with Sharia law expertise — I'm open to internships, project-based work, full-time opportunities, and academic collaborations. Let's build something together.</p>
+
+      <div class="contact-links">
+        <a href="mailto:khoirulanam3521@gmail.com" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          khoirulanam3521@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/khoirulanam" class="contact-link" target="_blank">
+          <div class="contact-link-icon">in</div>
+          linkedin.com/in/khoirulanam
+        </a>
+        <a href="https://instagram.com/anamueda" class="contact-link" target="_blank">
+          <div class="contact-link-icon">ig</div>
+          @anamueda
+        </a>
+        <a href="https://mejaetengah.id" class="contact-link" target="_blank">
+          <div class="contact-link-icon">🌐</div>
+          mejaetengah.id
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form reveal reveal-delay-2">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Subject / Opportunity</label>
+        <input type="text" placeholder="Internship / Collaboration / Research / Speaking / Other">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell me about the opportunity or how I can help..."></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit()">
+        Send Message →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">Khoirul <span>Anam</span> · Legal Counsel & Contract Drafter</div>
+  <div class="footer-right">UIN Sunan Kalijaga Yogyakarta · 2025</div>
+</footer>
+
+<script>
+  // Loader
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 2200);
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX - 4 + 'px';
+    cursor.style.top = mouseY - 4 + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX - 18 + 'px';
+    cursorRing.style.top = ringY - 18 + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2)';
+      cursorRing.style.transform = 'scale(1.5)';
+      cursorRing.style.borderColor = 'var(--gold)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      cursorRing.style.transform = 'scale(1)';
+      cursorRing.style.borderColor = 'rgba(201,168,76,0.5)';
+    });
+  });
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+
+    progressBar.style.width = progress + '%';
+
+    if (scrollTop > 60) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    // Active nav
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    sections.forEach(section => {
+      const top = section.offsetTop - 100;
+      const bottom = top + section.offsetHeight;
+      if (scrollTop >= top && scrollTop < bottom) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + section.id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // Theme
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    document.querySelector('.theme-toggle').textContent = current === 'dark' ? '☾' : '☀';
+  }
+
+  // Mobile menu
+  let mobileOpen = false;
+  function toggleMobile() {
+    mobileOpen = !mobileOpen;
+    document.getElementById('mobileMenu').classList.toggle('open', mobileOpen);
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+  }
+  function closeMobile() {
+    mobileOpen = false;
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Form
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#2a5c3a';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+</body>
+</html>

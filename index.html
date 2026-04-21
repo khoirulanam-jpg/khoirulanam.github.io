@@ -1601,6 +1601,13 @@
     <div class="community-orgs reveal reveal-delay-2">
       <div class="community-org">
         <div class="community-org-left">
+          <h4>IKPM Jabar — Yogyakarta</h4>
+          <p>Ikatan Keluarga Pelajar Mahasiswa Jawa Barat · Yogyakarta Chapter</p>
+        </div>
+        <div class="community-org-role">Secretary General</div>
+      </div>
+      <div class="community-org">
+        <div class="community-org-left">
           <h4>HMI — Himpunan Mahasiswa Islam</h4>
           <p>National Islamic student organization · Cabang Yogyakarta</p>
         </div>
@@ -1645,7 +1652,7 @@
     <div class="contact-left reveal">
       <div class="section-tag">06 — Contact</div>
       <h2 class="contact-title">Ready to Work<br>with a <em>Sharp</em><br>Legal Mind?</h2>
-      <p class="contact-desc">Whether you need a contract drafter, legal counsel, or a research collaborator with Sharia law expertise — I'm open to internships, project-based work, full-time opportunities, and academic collaborations. Let's build something together.</p>
+      <p class="contact-desc">Whether you're looking for a research collaborator, a speaker for your event, or a legal perspective on your project — I'm open to collaborations, research partnerships, and speaking engagements. Let's build something together.</p>
 
       <div class="contact-links">
         <a href="mailto:khoirulanam3521@gmail.com" class="contact-link">
@@ -1670,21 +1677,21 @@
     <div class="contact-form reveal reveal-delay-2">
       <div class="form-group">
         <label>Your Name</label>
-        <input type="text" placeholder="Full name">
+        <input id="f-name" type="text" placeholder="Full name">
       </div>
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" placeholder="your@email.com">
+        <input id="f-email" type="email" placeholder="your@email.com">
       </div>
       <div class="form-group">
         <label>Subject / Opportunity</label>
-        <input type="text" placeholder="Internship / Collaboration / Research / Speaking / Other">
+        <input id="f-subject" type="text" placeholder="Collaboration / Research / Speaking / Other">
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea placeholder="Tell me about the opportunity or how I can help..."></textarea>
+        <textarea id="f-message" placeholder="Tell me about the opportunity or how I can help..."></textarea>
       </div>
-      <button class="form-submit" onclick="handleSubmit()">
+      <button class="form-submit" onclick="sendMessage()">
         Send Message →
       </button>
     </div>
@@ -1808,14 +1815,28 @@
   }
 
   // Form
-  function handleSubmit() {
+  function sendMessage() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const subject = document.getElementById('f-subject').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+
+    if (!name || !message) {
+      alert('Please fill in your name and message.');
+      return;
+    }
+
+    const to = 'khoirulanam3521@gmail.com';
+    const sub = encodeURIComponent(subject || 'Message from Portfolio Website');
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\n${message}`
+    );
+
+    window.location.href = `mailto:${to}?subject=${sub}&body=${body}`;
+
     const btn = document.querySelector('.form-submit');
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = '#2a5c3a';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-    }, 3000);
+    btn.textContent = 'Opening Email App... ✓';
+    setTimeout(() => { btn.textContent = 'Send Message →'; }, 3000);
   }
 </script>
 </body>
